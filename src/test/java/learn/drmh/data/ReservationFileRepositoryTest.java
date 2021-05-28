@@ -26,6 +26,11 @@ class ReservationFileRepositoryTest {
     static final int RESERVATION_COUNT = 13;
 
     final String hostId = "3edda6bc-ab95-49a8-8962";
+    final int guestId = 230;
+    final LocalDate start = LocalDate.of(2021, 06, 21);
+    final LocalDate end = LocalDate.of(2021, 06, 28);
+    final BigDecimal total = BigDecimal.valueOf(3500);
+
 
     ReservationFileRepository repository = new ReservationFileRepository(TEST_DIR_PATH);
 
@@ -46,9 +51,9 @@ class ReservationFileRepositoryTest {
     void shouldAdd() throws DataException {
         Reservation reservation = new Reservation();
         reservation.setId(14);
-        reservation.setStart(LocalDate.parse("2021-05-20"));
-        reservation.setEnd(LocalDate.parse("2021-05-24"));
-        reservation.setTotal(new BigDecimal("3000"));
+        reservation.setStart(LocalDate.of(2021,6,20));
+        reservation.setEnd(LocalDate.of(2021, 6, 24));
+        reservation.setTotal(BigDecimal.valueOf(3500));
 
         Guest guest = new Guest();
         guest.setId(200);
@@ -63,14 +68,120 @@ class ReservationFileRepositoryTest {
         assertEquals(14, reservation.getId());
     }
 
-//    @Test
-//    void shouldUpdate() throws DataException {
-//        Reservation reservation = repository.findByHostId(hostId);
-//        reservation.setStart(LocalDate.parse("2020-04-20"));
-//        reservation.setEnd(LocalDate.parse("2020-04-24"));
-//        reservation.setTotal(new BigDecimal("2500"));
-//        assertTrue(repository.update(reservation));
-//    }
+    @Test
+    void shouldUpdateExistingTwelve() throws DataException {
+        Reservation reservation = new Reservation();
+        reservation.setId(12);
+        reservation.setStart(start);
+        reservation.setEnd(end);
+        reservation.setTotal(total);
+
+        Guest guest = new Guest();
+        guest.setId(200);
+        reservation.setGuest(guest);
+
+        Host host = new Host();
+        host.setId(hostId);
+        reservation.setHost(host);
+
+        boolean success = repository.update(reservation);
+        assertTrue(success);
+
+        Reservation actual = repository.findById(12, hostId);
+        assertNotNull(actual);
+        assertEquals(start, actual.getStart());
+        assertEquals(end, actual.getEnd());
+        assertEquals(total, actual.getTotal());
+    }
+
+    @Test
+    void shouldNotUpdateExisting() throws DataException {
+        Reservation reservation = new Reservation();
+        reservation.setId(10000);
+        reservation.setStart(start);
+        reservation.setEnd(end);
+        reservation.setTotal(total);
+
+        Guest guest = new Guest();
+        guest.setId(200);
+        reservation.setGuest(guest);
+
+        Host host = new Host();
+        host.setId(hostId);
+        reservation.setHost(host);
+
+        boolean actual = repository.update(reservation);
+        assertFalse(actual);
+
+    }
+
+
+    @Test
+    void shouldNotUpdateTwelveByMissingHostId() throws DataException {
+        Reservation reservation = new Reservation();
+        reservation.setId(12);
+        reservation.setStart(start);
+        reservation.setEnd(end);
+        reservation.setTotal(total);
+
+        Guest guest = new Guest();
+        guest.setId(200);
+        reservation.setGuest(guest);
+
+        Host host = new Host();
+        host.setId("1jd9dhl0-kdnjw8-1298hsd.csv");
+        reservation.setHost(host);
+
+        boolean actual = repository.update(reservation);
+        assertFalse(actual);
+    }
+
+    @Test
+    void shouldNotUpdateMissingByMissingHostId() throws DataException {
+        Reservation reservation = new Reservation();
+        reservation.setId(12);
+        reservation.setStart(start);
+        reservation.setEnd(end);
+        reservation.setTotal(total);
+
+        Guest guest = new Guest();
+        guest.setId(200);
+        reservation.setGuest(guest);
+
+        Host host = new Host();
+        host.setId("1jd9dhl0-kdnjw8-1298hsd.csv");
+        reservation.setHost(host);
+
+        boolean actual = repository.update(reservation);
+        assertFalse(actual);
+    }
+
+    @Test
+    void shouldDeleteExistingTwelve() throws DataException {
+        boolean actual = repository.deleteById(12,hostId);
+        assertTrue(actual);
+
+        Reservation r = repository.findById(12, hostId);
+        assertNull(r);
+    }
+
+    @Test
+    void shouldNotDeleteNotExisting() throws DataException {
+        boolean actual = repository.deleteById(1000, hostId);
+        assertFalse(actual);
+    }
+
+    @Test
+    void shouldNotDeleteTwelveByMissingHostId() throws DataException {
+        boolean actual = repository.deleteById(12, "1jd9dhl0-kdnjw8-1298hsd.csv");
+        assertFalse(actual);
+    }
+
+    @Test
+    void ShouldNotDeleteNotExistingByMissingHostId() throws DataException {
+        boolean actual = repository.deleteById(10000, "1jd9dhl0-kdnjw8-1298hsd.csv");
+        assertFalse(actual);
+    }
 
 
 

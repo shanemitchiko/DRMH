@@ -13,7 +13,7 @@ import java.util.List;
 
 import static javax.accessibility.AccessibleRole.HEADER;
 
-public class ReservationFileRepository {
+public class ReservationFileRepository implements ReservationRepository {
 
 
     private final String directory;
@@ -41,8 +41,12 @@ public class ReservationFileRepository {
         return result;
     }
 
-    private String getFilePath(String hostId) {
-        return Paths.get(directory, hostId + ".csv").toString();
+    public Reservation findById(int id, String hostId) {
+       return findByHostId(hostId).stream()
+                .filter(i -> i.getId() == id)
+               .findFirst()
+               .orElse(null);
+
     }
 
     public Reservation add(Reservation reservation) throws DataException {
@@ -72,6 +76,19 @@ public class ReservationFileRepository {
         return false;
     }
 
+    public boolean deleteById(int id, String hostId) throws DataException {
+       List<Reservation> all = findByHostId(hostId);
+       for (int i = 0; i < all.size(); i++) {
+           if(all.get(i).getId() == id) {
+               all.remove(i);
+               writeAll(all, hostId);
+               return true;
+           }
+       }
+       return false;
+    }
+
+
     protected void writeAll(List<Reservation> reservations, String hostId) throws DataException {
         try (PrintWriter writer = new PrintWriter(getFilePath(hostId))) {
 
@@ -83,6 +100,10 @@ public class ReservationFileRepository {
         } catch (FileNotFoundException ex) {
             throw new DataException(ex);
         }
+    }
+
+    private String getFilePath(String hostId) {
+        return Paths.get(directory, hostId + ".csv").toString();
     }
 
     private String serialize(Reservation reservation) {

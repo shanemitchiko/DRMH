@@ -2,6 +2,7 @@ package learn.drmh.models;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class Reservation {
 
@@ -15,12 +16,11 @@ public class Reservation {
     public Reservation() {
     }
 
-    public Reservation(int id, LocalDate start, LocalDate end, Guest guest, Host host, BigDecimal total) {
+    public Reservation(int id, LocalDate start, LocalDate end, Guest guest, BigDecimal total) {
         this.id = id;
         this.start = start;
         this.end = end;
         this.guest = guest;
-        this.host = host;
         this.total = total;
     }
 
@@ -70,5 +70,18 @@ public class Reservation {
 
     public void setTotal(BigDecimal total) {
         this.total = total;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Reservation that = (Reservation) o;
+        return id == that.id && start.equals(that.start) && end.equals(that.end) && guest.equals(that.guest) && host.equals(that.host) && total.equals(that.total);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, start, end, guest, host, total);
     }
 }

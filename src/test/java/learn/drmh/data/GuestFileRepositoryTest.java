@@ -43,6 +43,14 @@ class GuestFileRepositoryTest {
         assertEquals("Lomas", lomas.getLastName());
     }
 
+    @Test
+    void shouldFindLomasById() {
+        Guest lomas = repository.findById(1);
+        assertNotNull(lomas);
+        assertEquals("Lomas", lomas.getLastName());
+    }
+
+
 //    @Test
 //    void shouldAdd() throws DataException {
 //        Guest expected = new Guest();

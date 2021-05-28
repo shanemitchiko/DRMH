@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class GuestFileRepository {
+public class GuestFileRepository implements GuestRepository{
 
     private static final String DELIMITER = ",";
     private static final String DELIMITER_REPLACEMENT = "@@@";
@@ -44,9 +44,9 @@ public class GuestFileRepository {
                 .orElse(null);
     }
 
-    public Guest findById(String id) {
+    public Guest findById(int id) {
         return findAll().stream()
-                .filter(i -> i.getEmail().equalsIgnoreCase(id))
+                .filter(i -> i.getId() == id)
                 .findFirst()
                 .orElse(null);
     }
