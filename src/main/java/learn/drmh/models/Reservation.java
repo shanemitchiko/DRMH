@@ -16,11 +16,12 @@ public class Reservation {
     public Reservation() {
     }
 
-    public Reservation(int id, LocalDate start, LocalDate end, Guest guest, BigDecimal total) {
+    public Reservation(int id, LocalDate start, LocalDate end, Guest guest, Host host, BigDecimal total) {
         this.id = id;
         this.start = start;
         this.end = end;
         this.guest = guest;
+        this.host = host;
         this.total = total;
     }
 

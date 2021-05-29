@@ -44,6 +44,13 @@ public class ReservationService {
         return result;
     }
 
+    public Reservation findById(int id, String hostId) throws DataException {
+         return findByHostId(hostId).stream()
+                .filter(i -> i.getId() == id)
+                .findFirst()
+                .orElse(null);
+    }
+
     public Result<Reservation> add(Reservation reservation) throws DataException {
         Result<Reservation> result = validate(reservation);
         if (!result.isSuccess()) {
@@ -88,6 +95,8 @@ public class ReservationService {
 
         if(!reservationRepository.update(reservation)) {
             result.addErrorMessage("Reservation" + reservation.getId() + "was not updated.");
+        } else {
+            result.setPayload(reservation);
         }
         return result;
     }

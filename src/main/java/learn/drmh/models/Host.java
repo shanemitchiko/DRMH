@@ -1,6 +1,7 @@
 package learn.drmh.models;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 public class Host {
 
@@ -109,5 +110,18 @@ public class Host {
 
     public void setWeekend_rate(BigDecimal weekend_rate) {
         this.weekend_rate = weekend_rate;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Host host = (Host) o;
+        return id.equals(host.id) && lastName.equals(host.lastName) && email.equals(host.email) && phone.equals(host.phone) && address.equals(host.address) && city.equals(host.city) && state.equals(host.state) && postal_code.equals(host.postal_code) && standard_rate.equals(host.standard_rate) && weekend_rate.equals(host.weekend_rate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, lastName, email, phone, address, city, state, postal_code, standard_rate, weekend_rate);
     }
 }

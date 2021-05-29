@@ -10,16 +10,14 @@ public class GuestRepositoryDouble implements GuestRepository {
 
     public final static Guest LOMAS = makeLomas();
     public final static Guest GECKS = makeGecks();
+    public final static Guest CARNCROSS = makeCarncross();
 
     private final ArrayList<Guest> guests = new ArrayList<>();
 
     public GuestRepositoryDouble() {
-        guests.add(new Guest(1, "Sullivan", "Lomas", "slomas0@mediafire.com", "(702) 7768761", "NV"));
-        guests.add(new Guest(2, "Olympie", "Gecks", "ogecks1@dagondesign.com", "(202) 2528316", "DC"));
-        guests.add(new Guest(3, "Tremain", "Carncross", "tcarncross2@japanpost.jp", "(313) 2245034", "MI"));
-        guests.add(new Guest(4, "Leonidas", "Gueny", "lgueny3@example.com", "(412) 6493981", "PA"));
-        guests.add(new Guest(5, "Berta", "Seppey", "bseppey4@yahoo.com", "(202) 2668098", "DC"));
-        guests.add(new Guest(6, "Kenn", "Curson", "kcurson5@youku.com", "(941) 9618942", "FL"));
+        guests.add(LOMAS);
+        guests.add(GECKS);
+        guests.add(CARNCROSS);
     }
 
     @Override
@@ -45,7 +43,7 @@ public class GuestRepositoryDouble implements GuestRepository {
 
     private static Guest makeLomas()  {
         Guest guest = new Guest();
-        guest.setId(2);
+        guest.setId(1);
         guest.setFirstName("Sullivan");
         guest.setLastName("Lomas");
         guest.setEmail("slomas0@mediafire.com");
@@ -56,12 +54,23 @@ public class GuestRepositoryDouble implements GuestRepository {
 
     private static Guest makeGecks() {
         Guest guest = new Guest();
-        guest.setId(1);
+        guest.setId(2);
         guest.setFirstName("Olympie");
         guest.setLastName("Gecks");
         guest.setEmail("ogecks1@dagondesign.com");
         guest.setPhoneNum("(202) 2528316");
         guest.setState("MD");
+        return guest;
+    }
+
+    private static Guest makeCarncross() {
+        Guest guest = new Guest();
+        guest.setId(3);
+        guest.setFirstName("Tremain");
+        guest.setLastName("Carncross");
+        guest.setEmail("tcarncross2@japanpost.jp");
+        guest.setPhoneNum("(313) 2245034");
+        guest.setState("MI");
         return guest;
     }
 }
