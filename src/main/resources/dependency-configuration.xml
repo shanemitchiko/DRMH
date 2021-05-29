@@ -5,7 +5,7 @@
         https://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <bean id="reservationRepository" class="learn.drmh.data.ReservationFileRepository">
-        <constructor-arg value="./data/reservations_test/"/>
+        <constructor-arg value="./data/reservations/"/>
     </bean>
     <bean id="guestRepository" class="learn.drmh.data.GuestFileRepository">
         <constructor-arg value="./data/guests.csv"/>

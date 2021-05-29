@@ -25,6 +25,21 @@ public class Reservation {
         this.total = total;
     }
 
+    public Reservation(Host host, Guest guest, LocalDate start, LocalDate end, BigDecimal total) {
+        this.start = start;
+        this.end = end;
+        this.guest = guest;
+        this.host = host;
+        this.total = total;
+    }
+
+    public Reservation(LocalDate start, LocalDate end, Guest guest, Host host) {
+        this.start = start;
+        this.end = end;
+        this.guest = guest;
+        this.host = host;
+    }
+
     public int getId() {
         return id;
     }

@@ -43,5 +43,4 @@ class HostFileRepositoryTest {
         assertEquals("Yearnes", yearnes.getLastName());
     }
 
-
 }

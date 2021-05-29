@@ -55,10 +55,9 @@ public class ReservationService {
         Result<Reservation> result = validate(reservation);
         if (!result.isSuccess()) {
             return result;
+        } else {
+            result.setPayload(reservationRepository.add(reservation));
         }
-
-        result.setPayload(reservationRepository.add(reservation));
-
         return result;
     }
 
@@ -69,8 +68,7 @@ public class ReservationService {
         List<LocalDate> stay = new ArrayList<>();
         int days = Period.between(reservation.getStart(),reservation.getEnd()).getDays();
 
-
-        for(int count = 0; count < days; count++, index = index.plusDays(1)) {
+        for(int count = 0; count <= days; count++, index = index.plusDays(1)) {
             stay.add(index);
         }
 

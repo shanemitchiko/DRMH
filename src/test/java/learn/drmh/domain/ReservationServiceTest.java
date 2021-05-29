@@ -156,6 +156,7 @@ class ReservationServiceTest {
         Reservation reservation = new Reservation(5, null, null, CARNCROSS, YEARNES, total);
         Result<Reservation> result = service.update(reservation);
         assertFalse(result.isSuccess());
+        System.out.println("Cannot update null Reservation");
     }
 
 
@@ -209,18 +210,20 @@ class ReservationServiceTest {
 
     }
 
-//    @Test
-//    void shouldCalculateTotal() throws DataException {
-//        BigDecimal total =
-//    }
+    @Test
+    void shouldCalculateTotalOfStay()  {
+        Reservation reservation = new Reservation();
+        reservation.setStart(LocalDate.of(2021, 8, 10));
+        reservation.setEnd(LocalDate.of(2021, 8, 13));
+        reservation.setGuest(CARNCROSS);
+        reservation.setHost(RHODES);
+        reservation.setTotal(service.calculateTotal(reservation, RHODES));
 
-
-
-    private Result makeResult(String message) {
-        Result result = new Result();
-        result.addErrorMessage(message);
-        return result;
+        assertEquals(BigDecimal.valueOf(1253.75), reservation.getTotal());
     }
+
+
+
 
 
 }

@@ -3,6 +3,7 @@ package learn.drmh.ui;
 import learn.drmh.models.Host;
 import learn.drmh.models.Reservation;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -61,15 +62,16 @@ public class View {
         return io.readLocalDate("Select a date [MM/dd/yyyy]: ");
     }
 
-    public void displaySummary() {
+    public Reservation findReservation(List<Reservation> hostReservations) {
 
     }
 
     public void displayHost(Host host) {
-        io.printf("%s: %s, %s%n",
+        String message = String.format("%s: %s, %s",
                 host.getLastName(),
                 host.getCity(),
                 host.getState());
+        displayHeader(message);
     }
 
     public void displayReservations(List<Reservation> reservations) {
@@ -78,16 +80,29 @@ public class View {
             return;
         }
         for (Reservation reservation : reservations) {
-            io.printf("%s %s - %s:%s - Value: $%.2f%n",
+            io.printf("ID: %s,  %s - %s, Guest: %s, %s, Email: %s%n ",
                     reservation.getId(),
                     reservation.getStart(),
                     reservation.getEnd(),
-                    reservation.getGuest(),
-                    reservation.getTotal()
-            );
+                    reservation.getGuest().getFirstName(),
+                    reservation.getGuest().getLastName(),
+                    reservation.getGuest().getEmail());
         }
     }
 
 
-
+    public Reservation displaySummary(Reservation reservation, BigDecimal total) {
+        String message = String.format("Summary");
+        displayHeader(message);
+        io.printf("Start: %s%n End: %s%n Total: $%s%n",
+                reservation.getStart(),
+                reservation.getEnd(),
+                total);
+        io.readBoolean("Is this okay? [y/n]: ");
+        if (false) {
+            System.out.println("Reservation cancelled");
+            enterToContinue();
+        }
+        return reservation;
+    }
 }

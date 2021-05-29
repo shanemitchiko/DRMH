@@ -20,12 +20,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ReservationFileRepositoryTest {
 
-    static final String SEED_FILE_PATH = "./data/reservations-seed-3edda6bc-ab95-49a8-8962.csv";
-    static final String TEST_FILE_PATH = "./data/reservations_test/3edda6bc-ab95-49a8-8962.csv";
+    static final String SEED_FILE_PATH = "./data/reservations-seed-3edda6bc-ab95-49a8-8962-d50b53f84b15.csv";
+    static final String TEST_FILE_PATH = "./data/reservations_test/3edda6bc-ab95-49a8-8962-d50b53f84b15.csv";
     static final String TEST_DIR_PATH = "./data/reservations_test";
     static final int RESERVATION_COUNT = 13;
 
-    final String hostId = "3edda6bc-ab95-49a8-8962";
+    final String hostId = "3edda6bc-ab95-49a8-8962-d50b53f84b15";
     final int guestId = 230;
     final LocalDate start = LocalDate.of(2021, 06, 21);
     final LocalDate end = LocalDate.of(2021, 06, 28);

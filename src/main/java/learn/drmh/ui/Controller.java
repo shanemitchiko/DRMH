@@ -8,6 +8,8 @@ import learn.drmh.models.Guest;
 import learn.drmh.models.Host;
 import learn.drmh.models.Reservation;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 public class Controller {
@@ -41,12 +43,13 @@ public class Controller {
             option = view.selectMainMenuOption();
             switch (option) {
                 case VIEW_RESERVATIONS_FOR_HOST:
-                    viewReservationsForHost();
+                    view();
                     break;
                 case MAKE_RESERVATION:
-                    makeReservation();
+                    make();
                     break;
                 case EDIT_RESERVATION:
+                    edit();
                     break;
                 case CANCEL_RESERVATION:
                     break;
@@ -54,7 +57,7 @@ public class Controller {
         } while (option != MainMenuOption.EXIT);
     }
 
-    private void viewReservationsForHost() {
+    private void view() {
         view.displayHeader(MainMenuOption.VIEW_RESERVATIONS_FOR_HOST.getMessage());
         String email = view.getHostEmail();
         Host host = hostService.findByEmail(email);
@@ -63,7 +66,7 @@ public class Controller {
         view.displayReservations(reservations);
     }
 
-    private void makeReservation() {
+    private void make() throws DataException {
         view.displayHeader(MainMenuOption.MAKE_RESERVATION.getMessage());
         String guestEmail = view.getGuestEmail();
         Guest guest = guestService.findByEmail(guestEmail);
@@ -72,13 +75,24 @@ public class Controller {
         view.displayHost(host);
         List<Reservation> reservations = reservationService.findByHostId(host.getId());
         view.displayReservations(reservations);
-
-
-
+        LocalDate start = view.getStartDate();
+        LocalDate end = view.getEndDate();
+        Reservation reservation = new Reservation(start, end, guest, host);
+        BigDecimal total = reservationService.calculateTotal(reservation, host);
+        view.displaySummary(reservation, total);
+        reservationService.add(reservation);
     }
 
+    private void edit() {
+        view.displayHeader(MainMenuOption.EDIT_RESERVATION.getMessage());
+        String guestEmail = view.getGuestEmail();
+        Guest guest = guestService.findByEmail(guestEmail);
+        String hostEmail = view.getHostEmail();
+        Host host = hostService.findByEmail(hostEmail);
+        view.displayHost(host);
+        List<Reservation> hostReservations = reservationService.findByHostId(host.getId());
+        Reservation reservation = view.findReservation(hostReservations);
 
-
-
+    }
 
 }
