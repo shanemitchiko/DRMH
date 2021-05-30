@@ -14,6 +14,7 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -62,7 +63,7 @@ public class ReservationService {
     }
 
     public BigDecimal calculateTotal(Reservation reservation, Host host) {
-        BigDecimal total = BigDecimal.ZERO;
+        //BigDecimal total = BigDecimal.ZERO;
         LocalDate index = reservation.getStart();
 
         List<LocalDate> stay = new ArrayList<>();
@@ -108,6 +109,19 @@ public class ReservationService {
 
         return result;
     }
+
+    public List<Reservation> sortReservations(List<Reservation> reservations) {
+        return reservations.stream()
+                .filter(r -> r.getStart().isAfter(LocalDate.now()))
+                .sorted(Comparator.comparing(Reservation::getStart))
+                .collect(Collectors.toList());
+    }
+
+//    public List<Reservation> filterFutureReservations(List<Reservation> reservations) {
+//        return sortReservations(reservations).stream()
+//                .filter(r -> r.getStart().isAfter(LocalDate.now()))
+//                .collect(Collectors.toList());
+//    }
 
     private Result<Reservation> validate(Reservation reservation) {
 

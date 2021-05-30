@@ -55,16 +55,24 @@ public class View {
     }
 
     public LocalDate getStartDate() {
-        return io.readLocalDate("Select a date [MM/dd/yyyy]: ");
+        return io.readLocalDate("Select Start date [MM/dd/yyyy]: ");
     }
 
     public LocalDate getEndDate() {
-        return io.readLocalDate("Select a date [MM/dd/yyyy]: ");
+        return io.readLocalDate("Select End date [MM/dd/yyyy]: ");
     }
 
-//    public Reservation findReservation(List<Reservation> hostReservations) {
-//
-//    }
+    public LocalDate getEditedStartDate()  {
+        return io.readEditedDate("Select Start date [MM/dd/yyyy]: ");
+    }
+
+    public LocalDate getEditedEndDate()  {
+        return io.readEditedDate("Select End date [MM/dd/yyyy]: ");
+    }
+
+
+
+
 
     public void displayHost(Host host) {
         String message = String.format("%s: %s, %s",
@@ -74,12 +82,12 @@ public class View {
         displayHeader(message);
     }
 
-    public void displayReservations(List<Reservation> reservations) {
-        if (reservations == null || reservations.isEmpty()) {
+    public void displayReservations(List<Reservation> sortedReservations) {
+        if (sortedReservations == null || sortedReservations.isEmpty()) {
             io.println("No reservations found.");
             return;
         }
-        for (Reservation reservation : reservations) {
+        for (Reservation reservation : sortedReservations) {
             io.printf("ID: %s,  %s - %s, Guest: %s, %s, Email: %s%n ",
                     reservation.getId(),
                     reservation.getStart(),
@@ -106,6 +114,41 @@ public class View {
         return reservation;
     }
 
-    //public Reservation findReservations() {
+    public Reservation chooseReservation(List<Reservation> reservations) {
+        displayReservations(reservations);
+        Reservation result = null;
+        if (reservations.size() > 0) {
+            int id = io.readInt("Choose Reservation ID: ");
+            for (Reservation r : reservations) {
+                if (r.getId() == id) {
+                    result = r;
+                    break;
+                }
+            }
+        }
+        return result;
+    }
+
+    public void findReservation(Reservation reservation) {
+        io.printf("ID: %s,  %s - %s, Guest: %s, %s, Email: %s%n ",
+                reservation.getId(),
+                reservation.getStart(),
+                reservation.getEnd(),
+                reservation.getGuest().getFirstName(),
+                reservation.getGuest().getLastName(),
+                reservation.getGuest().getEmail());
+    }
+
+    public Reservation editReservation(Reservation reservation) {
+        displayHeader("Editing Reservation " + reservation.getId());
+        findReservation(reservation);
+        LocalDate startDate = getEditedStartDate();
+        if (startDate == null) startDate = reservation.getStart();
+        LocalDate endDate = getEditedEndDate();
+        if (endDate == null) endDate = reservation.getEnd();
+        reservation.setStart(startDate);
+        reservation.setEnd(endDate);
+        return reservation;
+    }
 
 }

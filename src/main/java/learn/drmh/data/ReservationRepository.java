@@ -1,5 +1,7 @@
 package learn.drmh.data;
 
+import learn.drmh.models.Guest;
+import learn.drmh.models.Host;
 import learn.drmh.models.Reservation;
 
 import java.util.List;
@@ -14,5 +16,6 @@ public interface ReservationRepository {
     boolean update(Reservation reservation) throws DataException;
 
     boolean deleteById(int id, String hostId) throws DataException;
+
 }
 

@@ -53,6 +53,7 @@ public class Controller {
                     edit();
                     break;
                 case CANCEL_RESERVATION:
+                    cancel();
                     break;
             }
         } while (option != MainMenuOption.EXIT);
@@ -63,8 +64,9 @@ public class Controller {
         String email = view.getHostEmail();
         Host host = hostService.findByEmail(email);
         List<Reservation> reservations = reservationService.findByHostId(host.getId());
+        List<Reservation> sortedReservations = reservationService.sortReservations(reservations);
         view.displayHost(host);
-        view.displayReservations(reservations);
+        view.displayReservations(sortedReservations);
     }
 
     private void make() throws DataException {
@@ -75,7 +77,8 @@ public class Controller {
         Host host = hostService.findByEmail(hostEmail);
         view.displayHost(host);
         List<Reservation> reservations = reservationService.findByHostId(host.getId());
-        view.displayReservations(reservations);
+        List<Reservation> sortedReservations = reservationService.sortReservations(reservations);
+        view.displayReservations(sortedReservations);
         LocalDate start = view.getStartDate();
         LocalDate end = view.getEndDate();
         Reservation reservation = new Reservation(start, end, guest, host);
@@ -84,7 +87,7 @@ public class Controller {
         reservation.setTotal(total);
         Result<Reservation> result = reservationService.add(reservation);
         if(result.isSuccess()) {
-            view.displayHeader("Created");
+            view.displayHeader("Reservation" + reservation.getId() + " created");
         } else {
             List<String> messages = result.getErrorMessages();
             for(String s : messages) {
@@ -93,15 +96,56 @@ public class Controller {
         }
     }
 
-    private void edit() {
+    private void edit() throws DataException {
         view.displayHeader(MainMenuOption.EDIT_RESERVATION.getMessage());
         String guestEmail = view.getGuestEmail();
         Guest guest = guestService.findByEmail(guestEmail);
         String hostEmail = view.getHostEmail();
         Host host = hostService.findByEmail(hostEmail);
         view.displayHost(host);
-        List<Reservation> hostReservations = reservationService.findByHostId(host.getId());
-        //Reservation reservation = view.findReservation(hostReservations);
+        List<Reservation> reservations = reservationService.findByHostId(host.getId());
+        List<Reservation> sortedReservations = reservationService.sortReservations(reservations);
+        Reservation reservation = view.chooseReservation(sortedReservations);
+        view.editReservation(reservation);
+        BigDecimal total = reservationService.calculateTotal(reservation, host);
+        view.displaySummary(reservation, total);
+        reservation.setTotal(total);
+        Result<Reservation> result = reservationService.update(reservation);
+        if(result.isSuccess()) {
+            view.displayHeader("Success");
+            System.out.println("Reservation " + reservation.getId() + " updated");
+        } else {
+            List<String> messages = result.getErrorMessages();
+            for(String s : messages) {
+                System.out.println(s);
+            }
+        }
     }
+
+    //g- slomas0@mediafire.com
+    //h- eyearnes0@sfgate.com
+
+    private void cancel() throws DataException {
+        view.displayHeader(MainMenuOption.CANCEL_RESERVATION.getMessage());
+        String guestEmail = view.getGuestEmail();
+        Guest guest = guestService.findByEmail(guestEmail);
+        String hostEmail = view.getHostEmail();
+        Host host = hostService.findByEmail(hostEmail);
+        view.displayHost(host);
+        List<Reservation> reservations = reservationService.findByHostId(host.getId());
+        List<Reservation> sortedReservations = reservationService.sortReservations(reservations);
+        Reservation reservation = view.chooseReservation(sortedReservations);
+        Result<Reservation> result = reservationService.delete(reservation);
+        if(result.isSuccess()) {
+            view.displayHeader("Success");
+            System.out.println("Reservation " + reservation.getId() + " cancelled");
+        } else {
+            List<String> messages = result.getErrorMessages();
+            for(String s : messages) {
+                System.out.println(s);
+            }
+        }
+    }
+
 
 }

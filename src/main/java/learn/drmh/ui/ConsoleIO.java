@@ -90,6 +90,18 @@ public class ConsoleIO {
         }
     }
 
+    public LocalDate readEditedDate(String prompt) {
+        while (true) {
+            String input = readString(prompt);
+            if (input.isBlank()) return null;
+            try {
+                return LocalDate.parse(input, formatter);
+            } catch (DateTimeParseException ex) {
+                println(INVALID_DATE);
+            }
+        }
+    }
+
     public BigDecimal readBigDecimal(String prompt) {
         while (true) {
             String input = readRequiredString(prompt);

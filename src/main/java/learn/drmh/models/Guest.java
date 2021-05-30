@@ -1,5 +1,7 @@
 package learn.drmh.models;
 
+import java.util.Objects;
+
 public class Guest {
 
     private int id;
@@ -68,5 +70,18 @@ public class Guest {
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Guest guest = (Guest) o;
+        return id == guest.id && firstName.equals(guest.firstName) && lastName.equals(guest.lastName) && email.equals(guest.email) && phoneNum.equals(guest.phoneNum) && state.equals(guest.state);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, firstName, lastName, email, phoneNum, state);
     }
 }
