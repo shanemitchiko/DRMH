@@ -62,9 +62,9 @@ public class View {
         return io.readLocalDate("Select a date [MM/dd/yyyy]: ");
     }
 
-    public Reservation findReservation(List<Reservation> hostReservations) {
-
-    }
+//    public Reservation findReservation(List<Reservation> hostReservations) {
+//
+//    }
 
     public void displayHost(Host host) {
         String message = String.format("%s: %s, %s",
@@ -105,4 +105,7 @@ public class View {
         }
         return reservation;
     }
+
+    //public Reservation findReservations() {
+
 }

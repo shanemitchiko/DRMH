@@ -4,6 +4,7 @@ import learn.drmh.data.DataException;
 import learn.drmh.domain.GuestService;
 import learn.drmh.domain.HostService;
 import learn.drmh.domain.ReservationService;
+import learn.drmh.domain.Result;
 import learn.drmh.models.Guest;
 import learn.drmh.models.Host;
 import learn.drmh.models.Reservation;
@@ -80,7 +81,16 @@ public class Controller {
         Reservation reservation = new Reservation(start, end, guest, host);
         BigDecimal total = reservationService.calculateTotal(reservation, host);
         view.displaySummary(reservation, total);
-        reservationService.add(reservation);
+        reservation.setTotal(total);
+        Result<Reservation> result = reservationService.add(reservation);
+        if(result.isSuccess()) {
+            view.displayHeader("Created");
+        } else {
+            List<String> messages = result.getErrorMessages();
+            for(String s : messages) {
+                System.out.println(s);
+            }
+        }
     }
 
     private void edit() {
@@ -91,8 +101,7 @@ public class Controller {
         Host host = hostService.findByEmail(hostEmail);
         view.displayHost(host);
         List<Reservation> hostReservations = reservationService.findByHostId(host.getId());
-        Reservation reservation = view.findReservation(hostReservations);
-
+        //Reservation reservation = view.findReservation(hostReservations);
     }
 
 }

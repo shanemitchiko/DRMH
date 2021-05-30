@@ -146,6 +146,10 @@ public class ReservationService {
             result.addErrorMessage("End date is required");
         }
 
+        if (reservation.getHost() == null) {
+            result.addErrorMessage("Host is required");
+        }
+
         if (reservation.getGuest() == null) {
             result.addErrorMessage("Guest is required");
         }

@@ -42,7 +42,7 @@ public class HostFileRepository implements HostRepository{
 
     public Host findById(String id) {
         return findAll().stream()
-                .filter(i -> i.getEmail().equalsIgnoreCase(id))
+                .filter(i -> i.getId().equalsIgnoreCase(id))
                 .findFirst()
                 .orElse(null);
     }
