@@ -88,7 +88,7 @@ public class View {
             return;
         }
         for (Reservation reservation : sortedReservations) {
-            io.printf("ID: %s,  %s - %s, Guest: %s, %s, Email: %s%n ",
+            io.printf("ID: %s,  %s - %s, Guest: %s, %s, Email: %s%n",
                     reservation.getId(),
                     reservation.getStart(),
                     reservation.getEnd(),
@@ -149,6 +149,31 @@ public class View {
         reservation.setStart(startDate);
         reservation.setEnd(endDate);
         return reservation;
+    }
+
+    public void displayNoHostFound() {
+        System.out.println();
+        io.println("Host not found. ");
+    }
+    public void displayNoGuestFound() {
+        System.out.println();
+        io.println("Guest not found.");
+    }
+    public void displayReservationsNotFound() {
+        System.out.println();
+        io.println("No reservations found.");
+    }
+    public void displayDateNotFound() {
+        System.out.println();
+        io.println("Start date and/or end date not found.");
+    }
+    public void displayTotalNotFound() {
+        System.out.println();
+        io.println("Total not found.");
+    }
+    public void displayReservationNotFound() {
+        System.out.println();
+        io.println("Reservation not found.");
     }
 
 }

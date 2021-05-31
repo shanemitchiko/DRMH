@@ -117,11 +117,11 @@ public class ReservationService {
                 .collect(Collectors.toList());
     }
 
-//    public List<Reservation> filterFutureReservations(List<Reservation> reservations) {
-//        return sortReservations(reservations).stream()
-//                .filter(r -> r.getStart().isAfter(LocalDate.now()))
-//                .collect(Collectors.toList());
-//    }
+    public List<Reservation> findAllReservations(List<Reservation> reservations) {
+        return sortReservations(reservations).stream()
+                .sorted(Comparator.comparing(Reservation::getStart))
+                .collect(Collectors.toList());
+    }
 
     private Result<Reservation> validate(Reservation reservation) {
 
