@@ -62,56 +62,12 @@ public class View {
         return io.readLocalDate("Select End date [MM/dd/yyyy]: ");
     }
 
-    public LocalDate getEditedStartDate()  {
+    public LocalDate getEditedStartDate() {
         return io.readEditedDate("Select Start date [MM/dd/yyyy]: ");
     }
 
-    public LocalDate getEditedEndDate()  {
+    public LocalDate getEditedEndDate() {
         return io.readEditedDate("Select End date [MM/dd/yyyy]: ");
-    }
-
-
-
-
-
-    public void displayHost(Host host) {
-        String message = String.format("%s: %s, %s",
-                host.getLastName(),
-                host.getCity(),
-                host.getState());
-        displayHeader(message);
-    }
-
-    public void displayReservations(List<Reservation> sortedReservations) {
-        if (sortedReservations == null || sortedReservations.isEmpty()) {
-            io.println("No reservations found.");
-            return;
-        }
-        for (Reservation reservation : sortedReservations) {
-            io.printf("ID: %s,  %s - %s, Guest: %s, %s, Email: %s%n",
-                    reservation.getId(),
-                    reservation.getStart(),
-                    reservation.getEnd(),
-                    reservation.getGuest().getFirstName(),
-                    reservation.getGuest().getLastName(),
-                    reservation.getGuest().getEmail());
-        }
-    }
-
-
-    public Reservation displaySummary(Reservation reservation, BigDecimal total) {
-        String message = String.format("Summary");
-        displayHeader(message);
-        io.printf("Start: %s%n End: %s%n Total: $%s%n",
-                reservation.getStart(),
-                reservation.getEnd(),
-                total);
-        io.readBoolean("Is this okay? [y/n]: ");
-        if (false) {
-            System.out.println("Reservation cancelled");
-            enterToContinue();
-        }
-        return reservation;
     }
 
     public Reservation chooseReservation(List<Reservation> reservations) {
@@ -130,7 +86,7 @@ public class View {
     }
 
     public void findReservation(Reservation reservation) {
-        io.printf("ID: %s,  %s - %s, Guest: %s, %s, Email: %s%n ",
+        io.printf("ID: %s%nStart Date: %s%nEnd Date: %s%nGuest: %s %s%nEmail: %s%n",
                 reservation.getId(),
                 reservation.getStart(),
                 reservation.getEnd(),
@@ -151,26 +107,71 @@ public class View {
         return reservation;
     }
 
+    public void displayHost(Host host) {
+        String message = String.format("%s: %s, %s",
+                host.getLastName(),
+                host.getCity(),
+                host.getState());
+        displayHeader(message);
+    }
+
+    public void displayReservations(List<Reservation> sortedReservations) {
+        if (sortedReservations == null || sortedReservations.isEmpty()) {
+            io.println("No reservations found.");
+            return;
+        }
+        System.out.println("Reservations");
+        System.out.println("=".repeat(92));
+        String rowFormat = "| %-2s |  %-10s | %-10s | %-10s | %-10s | %-30s | %n";
+        System.out.printf(rowFormat, "ID", "Start Date", "End Date", "First Name", "Last Name", "Email");
+        System.out.println("=".repeat(92));
+        for (Reservation reservation : sortedReservations) {
+            io.printf(rowFormat,
+                    reservation.getId(),
+                    reservation.getStart(),
+                    reservation.getEnd(),
+                    reservation.getGuest().getFirstName(),
+                    reservation.getGuest().getLastName(),
+                    reservation.getGuest().getEmail());
+        }
+        System.out.println("=".repeat(92));
+    }
+
+    public Reservation displaySummary(Reservation reservation, BigDecimal total) {
+        String message = String.format("Summary");
+        displayHeader(message);
+        io.printf("Start: %s%nEnd: %s%nTotal: $%s%n",
+                reservation.getStart(),
+                reservation.getEnd(),
+                total);
+        io.readBoolean("Is this okay? [y/n]: ");
+        if (false) {
+            System.out.println("Reservation cancelled");
+            enterToContinue();
+        }
+        return reservation;
+    }
+
     public void displayNoHostFound() {
         System.out.println();
         io.println("Host not found. ");
     }
+
     public void displayNoGuestFound() {
         System.out.println();
         io.println("Guest not found.");
     }
+
     public void displayReservationsNotFound() {
         System.out.println();
         io.println("No reservations found.");
     }
-    public void displayDateNotFound() {
-        System.out.println();
-        io.println("Start date and/or end date not found.");
-    }
+
     public void displayTotalNotFound() {
         System.out.println();
         io.println("Total not found.");
     }
+
     public void displayReservationNotFound() {
         System.out.println();
         io.println("Reservation not found.");

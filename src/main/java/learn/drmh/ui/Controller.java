@@ -29,7 +29,7 @@ public class Controller {
 
 
     public void run() {
-        view.displayHeader("Welcome to Sustainable Foraging");
+        view.displayHeader("Welcome to Don't Wreck My House");
         try {
             runAppLoop();
         } catch (DataException ex) {
@@ -95,7 +95,7 @@ public class Controller {
                         reservation.setTotal(total);
                         Result<Reservation> result = reservationService.add(reservation);
                         if(result.isSuccess()) {
-                            view.displayHeader("Reservation" + reservation.getId() + " created");
+                            view.displayHeader("Reservation " + reservation.getId() + " created");
                         } else {
                             List<String> messages = result.getErrorMessages();
                             for(String s : messages) {
