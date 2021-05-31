@@ -17,7 +17,7 @@ class HostServiceTest {
     @Test
     void shouldFindSix() throws DataException {
         List<Host> hosts = service.findAll();
-        assertEquals(6, hosts.size());
+        assertEquals(2, hosts.size());
     }
 
     @Test

@@ -155,8 +155,8 @@ public class Controller {
             view.displayHost(host);
             List<Reservation> reservations = reservationService.findByHostId(host.getId());
             if (reservations != null) {
-                List<Reservation> sortedReservations = reservationService.futureReservations(reservations);
-                Reservation reservation = view.chooseReservation(sortedReservations);
+                List<Reservation> futureReservations = reservationService.futureReservations(reservations);
+                Reservation reservation = view.chooseReservation(futureReservations);
                 if (reservation != null) {
                     Result<Reservation> result = reservationService.delete(reservation);
                     if(result.isSuccess()) {

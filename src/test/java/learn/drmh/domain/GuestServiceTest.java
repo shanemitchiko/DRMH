@@ -16,7 +16,7 @@ class GuestServiceTest {
     @Test
     void shouldFindSix() throws DataException {
         List<Guest> guests = service.findAll();
-        assertEquals(6, guests.size());
+        assertEquals(3, guests.size());
     }
 
     @Test
@@ -29,11 +29,11 @@ class GuestServiceTest {
     void shouldFindSullivanById() {
         Guest guest = service.findById(1);
         assertNotNull(guest);
-        assertEquals("Tom", guest.getFirstName());
-        assertEquals("Sullivan", guest.getLastName());
-        assertEquals("tomsullivan123@gmail.com", guest.getEmail());
-        assertEquals("(718) 3456789", guest.getPhoneNum());
-        assertEquals("MD", guest.getState());
+        assertEquals("Sullivan", guest.getFirstName());
+        assertEquals("Lomas", guest.getLastName());
+        assertEquals("slomas0@mediafire.com", guest.getEmail());
+        assertEquals("(702) 7768761", guest.getPhoneNum());
+        assertEquals("NV", guest.getState());
     }
 
     @Test
@@ -44,13 +44,13 @@ class GuestServiceTest {
 
     @Test
     void shouldFindSullivanByEmail() {
-        Guest guest = service.findByEmail("tomsullivan123@gmail.com");
+        Guest guest = service.findByEmail("slomas0@mediafire.com");
         assertNotNull(guest);
         assertEquals(1, guest.getId());
-        assertEquals("Tom", guest.getFirstName());
-        assertEquals("Sullivan", guest.getLastName());
-        assertEquals("(718) 3456789", guest.getPhoneNum());
-        assertEquals("MD", guest.getState());
+        assertEquals("Sullivan", guest.getFirstName());
+        assertEquals("Lomas", guest.getLastName());
+        assertEquals("(702) 7768761", guest.getPhoneNum());
+        assertEquals("NV", guest.getState());
     }
 
     @Test
