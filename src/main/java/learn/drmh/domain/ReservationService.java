@@ -63,7 +63,6 @@ public class ReservationService {
     }
 
     public BigDecimal calculateTotal(Reservation reservation, Host host) {
-        //BigDecimal total = BigDecimal.ZERO;
         LocalDate index = reservation.getStart();
 
         List<LocalDate> stay = new ArrayList<>();
@@ -110,7 +109,7 @@ public class ReservationService {
         return result;
     }
 
-    public List<Reservation> sortReservations(List<Reservation> reservations) {
+    public List<Reservation> futureReservations(List<Reservation> reservations) {
         return reservations.stream()
                 .filter(r -> r.getStart().isAfter(LocalDate.now()))
                 .sorted(Comparator.comparing(Reservation::getStart))
@@ -118,7 +117,7 @@ public class ReservationService {
     }
 
     public List<Reservation> findAllReservations(List<Reservation> reservations) {
-        return sortReservations(reservations).stream()
+        return reservations.stream()
                 .sorted(Comparator.comparing(Reservation::getStart))
                 .collect(Collectors.toList());
     }
@@ -215,27 +214,6 @@ public class ReservationService {
                     break;
                 }
             }
-
         }
-
-
-//    private void validateDuplicate(Reservation reservation, Result<Reservation> result) {
-//        List<Reservation> reservations = repository.findAll();
-//        for (Reservation r : reservations) {
-//            if (guest.getFirstName().equals(g.getFirstName())){
-//                if (guest.getLastName().equals(g.getLastName())) {
-//                    if (guest.getEmail().equals(g.getEmail())) {
-//                        if (guest.getPhoneNum().equals(g.getPhoneNum())) {
-//                            if (guest.getState().equals(g.getState())) {
-//                                result.addErrorMessage("Duplicate Guest is not allowed");
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//    }
-
-
     }
 }

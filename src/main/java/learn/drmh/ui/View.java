@@ -31,10 +31,6 @@ public class View {
         return MainMenuOption.fromValue(io.readInt(message, min, max));
     }
 
-    public void enterToContinue() {
-        io.readString("Press [Enter] to continue.");
-    }
-
     public void displayHeader(String message) {
         io.println("");
         io.println(message);
@@ -98,6 +94,7 @@ public class View {
     public Reservation editReservation(Reservation reservation) {
         displayHeader("Editing Reservation " + reservation.getId());
         findReservation(reservation);
+        System.out.println();
         LocalDate startDate = getEditedStartDate();
         if (startDate == null) startDate = reservation.getStart();
         LocalDate endDate = getEditedEndDate();
@@ -137,19 +134,14 @@ public class View {
         System.out.println("=".repeat(92));
     }
 
-    public Reservation displaySummary(Reservation reservation, BigDecimal total) {
+    public boolean displaySummary(Reservation reservation, BigDecimal total) {
         String message = String.format("Summary");
         displayHeader(message);
         io.printf("Start: %s%nEnd: %s%nTotal: $%s%n",
                 reservation.getStart(),
                 reservation.getEnd(),
                 total);
-        io.readBoolean("Is this okay? [y/n]: ");
-        if (false) {
-            System.out.println("Reservation cancelled");
-            enterToContinue();
-        }
-        return reservation;
+        return io.readBoolean("Is this okay? [y/n]: ");
     }
 
     public void displayNoHostFound() {
@@ -176,5 +168,4 @@ public class View {
         System.out.println();
         io.println("Reservation not found.");
     }
-
 }

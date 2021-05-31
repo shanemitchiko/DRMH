@@ -15,7 +15,6 @@ import static javax.accessibility.AccessibleRole.HEADER;
 
 public class ReservationFileRepository implements ReservationRepository {
 
-
     private final String directory;
 
     public ReservationFileRepository(String directory) {
@@ -26,7 +25,7 @@ public class ReservationFileRepository implements ReservationRepository {
         ArrayList<Reservation> result = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(getFilePath(hostId)))) {
 
-            reader.readLine(); // read header - throws it
+            reader.readLine();
 
             for (String line = reader.readLine(); line != null; line = reader.readLine()) {
 
@@ -36,7 +35,7 @@ public class ReservationFileRepository implements ReservationRepository {
                 }
             }
         } catch (IOException ex) {
-            // don't throw on read
+
         }
         return result;
     }

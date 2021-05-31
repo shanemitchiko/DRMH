@@ -27,7 +27,6 @@ public class Controller {
         this.view = view;
     }
 
-
     public void run() {
         view.displayHeader("Welcome to Don't Wreck My House");
         try {
@@ -84,23 +83,27 @@ public class Controller {
                 view.displayHost(host);
                 List<Reservation> reservations = reservationService.findByHostId(host.getId());
                 if (reservations != null) {
-                    List<Reservation> sortedReservations = reservationService.sortReservations(reservations);
-                    view.displayReservations(sortedReservations);
+                    List<Reservation> futureReservations = reservationService.futureReservations(reservations);
+                    view.displayReservations(futureReservations);
                     LocalDate start = view.getStartDate();
                     LocalDate end = view.getEndDate();
                     Reservation reservation = new Reservation(start, end, guest, host);
                     BigDecimal total = reservationService.calculateTotal(reservation, host);
                     if (total != null) {
-                        view.displaySummary(reservation, total);
-                        reservation.setTotal(total);
-                        Result<Reservation> result = reservationService.add(reservation);
-                        if(result.isSuccess()) {
-                            view.displayHeader("Reservation " + reservation.getId() + " created");
-                        } else {
-                            List<String> messages = result.getErrorMessages();
-                            for(String s : messages) {
-                                System.out.println(s);
+                        if(view.displaySummary(reservation, total)) {
+                            reservation.setTotal(total);
+                            Result<Reservation> result = reservationService.add(reservation);
+                            if(result.isSuccess()) {
+                                view.displayHeader("Reservation " + reservation.getId() + " created");
+                            } else {
+                                List<String> messages = result.getErrorMessages();
+                                for(String s : messages) {
+                                    System.out.println(s);
+                                }
                             }
+                        } else {
+                            System.out.println();
+                            System.out.println("Reservation not added");
                         }
                     } else view.displayTotalNotFound();
                 } else view.displayReservationsNotFound();
@@ -116,32 +119,33 @@ public class Controller {
             view.displayHost(host);
             List<Reservation> reservations = reservationService.findByHostId(host.getId());
             if(reservations != null && !reservations.isEmpty()) {
-                List<Reservation> sortedReservations = reservationService.sortReservations(reservations);
-                Reservation reservation = view.chooseReservation(sortedReservations);
+                List<Reservation> futureReservations = reservationService.futureReservations(reservations);
+                Reservation reservation = view.chooseReservation(futureReservations);
                 if (reservation != null) {
                     view.editReservation(reservation);
                     BigDecimal total = reservationService.calculateTotal(reservation, host);
                     if (total != null) {
-                        view.displaySummary(reservation, total);
-                        reservation.setTotal(total);
-                        Result<Reservation> result = reservationService.update(reservation);
-                        if (result.isSuccess()) {
-                            view.displayHeader("Success");
-                            System.out.println("Reservation " + reservation.getId() + " updated");
-                        } else {
-                            List<String> messages = result.getErrorMessages();
-                            for (String s : messages) {
-                                System.out.println(s);
+                        if(view.displaySummary(reservation, total)) {
+                            reservation.setTotal(total);
+                            Result<Reservation> result = reservationService.update(reservation);
+                            if (result.isSuccess()) {
+                                view.displayHeader("Success");
+                                System.out.println("Reservation " + reservation.getId() + " updated");
+                            } else {
+                                List<String> messages = result.getErrorMessages();
+                                for (String s : messages) {
+                                    System.out.println(s);
+                                }
                             }
+                        } else {
+                            System.out.println();
+                            System.out.println("Reservation not updated.");
                         }
                     } else view.displayTotalNotFound();
                 } else view.displayReservationNotFound();
             } else view.displayReservationsNotFound();
         } else view.displayNoHostFound();
     }
-
-    //g- slomas0@mediafire.com
-    //h- eyearnes0@sfgate.com
 
     private void cancel() throws DataException {
         view.displayHeader(MainMenuOption.CANCEL_RESERVATION.getMessage());
@@ -151,7 +155,7 @@ public class Controller {
             view.displayHost(host);
             List<Reservation> reservations = reservationService.findByHostId(host.getId());
             if (reservations != null) {
-                List<Reservation> sortedReservations = reservationService.sortReservations(reservations);
+                List<Reservation> sortedReservations = reservationService.futureReservations(reservations);
                 Reservation reservation = view.chooseReservation(sortedReservations);
                 if (reservation != null) {
                     Result<Reservation> result = reservationService.delete(reservation);
@@ -168,6 +172,4 @@ public class Controller {
             } else view.displayReservationsNotFound();
         } else view.displayNoHostFound();
     }
-
-
 }

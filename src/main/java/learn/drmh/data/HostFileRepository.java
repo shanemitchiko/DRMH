@@ -1,6 +1,5 @@
 package learn.drmh.data;
 
-import learn.drmh.models.Guest;
 import learn.drmh.models.Host;
 
 import java.io.BufferedReader;
@@ -25,7 +24,7 @@ public class HostFileRepository implements HostRepository{
         ArrayList<Host> result = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
 
-            reader.readLine(); // read header - throws it
+            reader.readLine();
 
             for (String line = reader.readLine(); line != null; line = reader.readLine()) {
 
@@ -35,7 +34,7 @@ public class HostFileRepository implements HostRepository{
                 }
             }
         } catch (IOException ex) {
-            // don't throw on read
+
         }
         return result;
     }
